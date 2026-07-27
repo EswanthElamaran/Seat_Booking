@@ -1,40 +1,67 @@
-#Data Importing section
-from passengerinfo import*
+# ============================================
+# TicketShow.py
+# Online Movie Booking System
+# ============================================
+
+import csv
+import os
+
 
 class TicketShow:
 
+    filename = "audienceData.csv"
+
     def ticketShow(self):
-        bln = [] # list for storing data and retrieving from passengerData.csv file
-        with open("passengerData.csv",'r+',newline="") as f:
-            r =  csv.reader(f)
-            data = list(r)
-            id = int(input("Enter Your Booking Id  :"))
-            for i in data:
-                if id == int(i[0]):
-                    for j in i:
-                        bln.append(j)
+
+        # Check if booking file exists
+        if not os.path.exists(self.filename):
+            print("\nNo bookings found.")
+            return
+
+        try:
+            bookingId = int(input("\nEnter Booking ID : "))
+        except ValueError:
+            print("Invalid Booking ID.")
+            return
+
+        found = False
+
+        with open(self.filename, "r", newline="") as file:
+
+            reader = csv.reader(file)
+
+            for row in reader:
+
+                if len(row) == 8 and int(row[0]) == bookingId:
+
+                    found = True
+
+                    print("\n")
+                    print("=" * 65)
+                    print("               ONLINE MOVIE BOOKING E-TICKET")
+                    print("=" * 65)
+                    print()
+
+                    print(f"Theatre        : LA Cinemas")
+                    print(f"Location       : Theppakulam, Trichy")
+                    print(f"Phone          : 8000800088")
+                    print("-" * 65)
+
+                    print(f"Booking ID     : {row[0]}")
+                    print(f"Movie          : {row[1]}")
+                    print(f"No. of Tickets : {row[2]}")
+                    print(f"Show Time      : {row[3]}")
+                    print(f"Booking Date   : {row[4]}")
+                    print(f"Seat Numbers   : {row[5]}")
+                    print(f"Ticket Type    : {row[6]}")
+                    print(f"Total Amount   : ₹{row[7]}")
+
+                    print("-" * 65)
+                    print("        Thank You For Booking With LA Cinemas")
+                    print("              Enjoy Your Movie!")
+                    print("=" * 65)
+
                     break
-        #print(bln)  
-        print("------------------------------------------------------------------------------")
-        print("                          ONLINE MOVIE BOOKING                               ")
-        print("------------------------------------------------------------------------------")
-        print()
-        print(" e_Ticket :", "LA Cinemas                  : Thepakulam,Trichy                ")
-        print("           ", "Phone No\Mob No             : 8000800088,8888880000            ")
-        print()
-        print("",bln[3],"------------->",bln[4],"            ","        Passenger Id:",bln[0])
-        print()
-        print(                                                  "Number of Passenger :",bln[2])
-        print("______________________________________________________________________________")
-        print()
-        print(" Date of Booking :",bln[4],"              ","Seat No :",bln[5],"              ")
-        print()
-        print(" Seat Type :       ",bln[6],"                                                           ")
-        print(" seat Fare :       ",bln[7],"                                                           ")
-        print()
-        print("------------------------------------------------------------------------------")
-                
 
-
-
-
+        if not found:
+            print("\nBooking ID not found.")
